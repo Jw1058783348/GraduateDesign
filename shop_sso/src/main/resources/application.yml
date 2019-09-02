@@ -1,0 +1,12 @@
+server:
+  port: 8084
+spring:
+  thymeleaf:
+    cache: false
+  redis:
+    host: 192.168.154.128
+dubbo:
+  application:
+    name: shop_sso
+  registry:
+    address: zookeeper://192.168.154.128:2181

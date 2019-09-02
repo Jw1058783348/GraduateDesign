@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="${#request.getContextPath() + '/'}"/>
+        <meta charset="UTF-8">
+        <title>我的购物车</title>
+        <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <script type="text/javascript" src="./js/jquery.js"></script>
+    <script type="text/javascript" src="./js/login.js"></script>
+    </head>
+<body>
+<div class="banner_x center">
+    <a href="http://localhost:8081/" target="_blank"><div class="logo fl"></div></a>
+
+    <div class="wdgwc fl ml40">我的购物车</div>
+    <div class="wxts fl ml20">温馨提示：产品是否购买成功，以最终下单为准哦，请尽快结算</div>
+    <div class="dlzc fr">
+        <ul id="login_eles">
+        </ul>
+
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="xiantiao"></div>
+<div class="gwcxqbj">
+    <div class="gwcxd center">
+        <div class="top2 center">
+            <div class="sub_top fl"><!--
+                <input type="checkbox" value="quanxuan" class="quanxuanAll" onclick="selectAll()"/>全选-->
+            </div>
+            <div class="sub_top fl">商品名称</div>
+            <div class="sub_top fl">单价</div>
+            <div class="sub_top fl">数量</div>
+            <div class="sub_top fl">小计</div>
+            <div class="sub_top fr">操作</div>
+            <div class="clear"></div>
+        </div>
+        <div class="content2 center" th:each="cart: ${cartList}">
+            <div class="sub_content fl ">
+                <!--<input type="checkbox" class="quanxuan"  name="id" th:value="${cart.id}"/>-->
+            </div>
+            <div class="sub_content fl"><img th:src="${'http://192.168.154.128/'+cart.goods.gimage}" style="height: 80px;width: 80px"></div>
+            <div class="sub_content fl ft20" th:text="${cart.goods.getGname()+'|'+cart.versions.gversion+'|'+cart.goods.gcolor}"></div>
+            <div class="sub_content fl " th:text="${cart.versions.gprice+'元'}"></div>
+            <div class="sub_content fl">
+                <input class="shuliang" type="number" th:value="${cart.gnumber}" disabled="disabled" >
+            </div>
+            <div class="sub_content fl" th:text="${cart.versions.gprice+'元'}"></div>
+            <div class="sub_content fl"><a th:onclick="'javascript:delCart('+${cart.id}+');'">×</a></div>
+            <script type="text/javascript" th:inline="javascript">
+                function delCart(data) {
+                    var reslut=confirm("是否该商品删除？");
+                        if(reslut){
+                            $.ajax({
+                                url:"/cart/delCart/",
+                                data:{"id":data},
+                                success:function (msg) {
+                                    if(msg){
+                                        alert(msg);
+                                    }
+                                    location.reload();
+                                }
+                            });
+                        }
+                }
+                function selectAll() {
+                    var cked=$(".quanxuanAll").prop("checked");
+                    $(".quanxuan").prop("checked",cked);
+                }
+                function tijiao() {
+                    location.href="http://localhost:8086/order/toEdit";
+                }
+            </script>
+            <div class="clear"></div>
+        </div>
+
+    </div>
+    <div class="jiesuandan mt20 center">
+        <div class="tishi fl ml20">
+            <ul>
+                <li><a href="http://localhost:8081/">继续购物</a></li>
+                <li>|</li>
+                <li>共<span th:text="${cartList.size()}"></span>件商品，已选择<span th:text="${cartList.size()}"></span>件</li>
+                <div class="clear"></div>
+            </ul>
+        </div>
+        <div class="jiesuan fr">
+            <div class="jiesuanjiage fl">合计（不含运费）：<span th:text="${allPrice+'元'}"></span></div>
+            <div class="jsanniu fr"><input class="jsan" type="submit" name="jiesuan" onclick="javascript:tijiao();" value="去结算"/></div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+</div>
+
+
+
+
+<!-- footer -->
+<footer class="center">
+
+    <div class="mt20">小米商城|MIUI|米聊|多看书城|小米路由器|视频电话|小米天猫店|小米淘宝直营店|小米网盟|小米移动|隐私政策|Select Region</div>
+    <div>©mi.com 京ICP证110507号 京ICP备10046444号 京公网安备11010802020134号 京网文[2014]0059-0009号</div>
+    <div>违法和不良信息举报电话：185-0130-1238，本网站所列数据，除特殊说明，所有数据均出自我司实验室测试</div>
+</footer>
+
+</body>
+</html>

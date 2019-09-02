@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="${#request.getContextPath() + '/'}"/>
+    <meta charset="UTF-8">
+    <title>商品添加</title>
+    <link rel="stylesheet" href="layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="css/public.css" media="all" />
+</head>
+<body class="childrenBody">
+<script type="text/javascript" src="layui/layui.js" ></script>
+<script type="text/javascript" src="js/jquery.js" ></script>
+<form class="layui-form layui-row" action="/order/SaveOrUpdateOrderDetails" enctype="multipart/form-data" th:method="post"  id="form_id">
+    <div class="layui-row layui-col-xs12" >
+        <div class=" layui-col-xs9" ><!--最外面的大盒子-->
+            <div class="layui-form-item" ><!--商品标题盒子-->
+                <label class="layui-form-label">商品标题</label>
+                <div class="layui-input-block">
+                    <input th:type="hidden" name="id" class="layui-input id" id="id_hidden"/>
+                    <input th:type="hidden" name="oid" class="layui-input oid" />
+                    <input th:type="hidden" name="gid" class="layui-input gid" />
+                    <input type="text" name="gname" required  lay-verify="required" readonly="readonly" autocomplete="off" class="layui-input gname">
+                </div>
+            </div>
+            <div class="layui-form-item" ><!--商品库存盒子-->
+                <label class="layui-form-label">商品信息</label>
+                <div class="layui-input-block">
+                    <textarea name="ginfo" readonly="readonly" class="layui-textarea ginfo"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-xs-offset4" ><!--图片及图片上传盒子-->
+            <div class="layui-upload-list" id="previewImg" style="padding-right: auto">
+                <input th:type="hidden" name="gimage" class="layui-input gimage"/>
+                <img name = "s_pmt_dw" id="imgPrev"  src="images/defaulthead.jpg"  alt="默认图片" style="width: 120px; height: 120px; margin-left: 35px"  class="thumbBox">
+            </div>
+        </div>
+    </div>
+    <div class="layui-row">
+        <div class="layui-form-item layui-col-md12">
+            <label class="layui-form-label">商品版本</label>
+            <div class="layui-input-block">
+                <input type="text" name="gversion" required  lay-verify="required" readonly="readonly" autocomplete="off" class="layui-input gversion">
+            </div>
+        </div>
+        <div class="layui-col-md12">
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品价格</label>
+                <div class="layui-input-block">
+                    <input type="text" name="gprice" required   readonly="readonly" autocomplete="off" class="layui-input gprice">
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md12">
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品数量</label>
+                <div class="layui-input-block">
+                    <input type="text" name="gnumber" required   lay-verify="required number" placeholder="请输入商品数量" autocomplete="off" class="layui-input gnumber">
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="layui-col-md12">
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo" id="submit_btn" >立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+</html>

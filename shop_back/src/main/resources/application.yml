@@ -1,0 +1,21 @@
+server:
+  port: 8080
+spring:
+  thymeleaf:
+    cache: false
+    mode: HTML5
+dubbo:
+  application:
+    name: shop_back
+  registry:
+    address: zookeeper://192.168.154.128:2181
+fdfs:
+  connect-timeout: 60
+  pool:
+    jmx-enabled: false
+  thumb-image:
+    width: 200
+    height: 200
+  tracker-list: 192.168.154.128:22122
+image:
+  path: http://192.168.154.128/

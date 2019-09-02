@@ -1,0 +1,46 @@
+{
+	"contentManagement": [
+		{
+			"title": "商品管理",
+			"icon": "icon-caidan",
+			"href": "/toPage/goodslist",
+			"spread": false
+		},
+		{
+			"title": "商品分类管理",
+			"icon": "icon-caidan",
+			"href": "toPage/typeslist",
+			"spread": false
+		}
+	],
+	"memberCenter": [
+		{
+			"title": "用户管理",
+			"icon": "&#xe612;",
+			"href": "/toPage/userList",
+			"spread": false
+		},
+		{
+			"title": "地址管理",
+			"icon": "&#xe612;",
+			"href": "/toPage/addressList",
+			"spread": false
+		}
+	],
+	"systemeSttings": [
+		{
+			"title": "订单管理",
+			"icon": "&#xe612;",
+			"href": "/toPage/ordersList",
+			"spread": false
+		},
+		{
+			"title": "订单详情管理",
+			"icon": "&#xe612;",
+			"href": "/toPage/orderDetailList",
+			"spread": false
+		}
+	]
+}
+
+

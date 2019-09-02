@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="${#request.getContextPath() + '/'}"/>
+        <meta charset="UTF-8">
+        <title>搜索结果</title>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="http://localhost:8084/js/login.js"></script>
+    </head>
+<body>
+<!-- start header -->
+<header>
+    <div class="top center">
+        <div class="right fr">
+            <div class="gouwuche fr"><a href="http://localhost:8085/cart/list">购物车</a></div>
+            <div class="fr">
+                <ul id="login_eles">
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</header>
+<!--end header -->
+
+<!-- start banner_x -->
+<div class="banner_x center">
+    <a href="http://localhost:8081/" target="_blank"><div class="logo fl"></div></a>
+    <a href=""><div class="ad_top fl"></div></a>
+    <div class="nav fl">
+        <ul class="top_liebiao">
+            <script>
+                $.ajax({
+                    url: "http://localhost:8080/goods/queryTypes",
+                    success: function (data) {
+                        var typesList=eval(data);
+                        for (var i = 0; i < typesList.length; i++) {
+                            console.log(typesList[i].tname);
+                            var items="<li><a href=\"http://localhost:8082/search/list?keyword="+typesList[i].tname+"\" target=\"_blank\">"+typesList[i].tname+"</a></li>";
+                            $(".top_liebiao").append(items);
+                        }
+                    }
+                });
+            </script>
+        </ul>
+    </div>
+    <div class="search fr">
+        <form action="search/list" method="get" >
+            <div class="text fl">
+                <input type="text" class="shuru"  name="keyword"  th:value="${keyword}" th:placeholder="不填写则默认搜索全部" >
+            </div>
+            <div class="submit fl">
+                <input type="submit" class="sousuo" value="搜索"/>
+            </div>
+            <div class="clear"></div>
+        </form>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- end banner_x -->
+
+<!-- start banner_y -->
+<!-- end banner -->
+
+<!-- start danpin -->
+<div class="danpin center">
+
+    <div class="biaoti center" th:text="'搜索'+${keyword}+'的结果:'"></div>
+    <div class="main center" >
+        <div class="mingxing fl mb20" style="border:2px solid #fff;width:230px;cursor:pointer;" onmouseout="this.style.border='2px solid #fff'" onmousemove="this.style.border='2px solid red'" th:each="solrGoods : ${solrGoodsList}">
+            <div class="sub_mingxing"><a th:href="${'http://localhost:8083/html/'+solrGoods.id+'.html'}" target="_blank"><img th:src="${path + solrGoods.gimage}" ></a></div>
+            <div class="pinpai"><a href="./xiangqing.html" target="_blank" th:text="${solrGoods.gname}"></a></div>
+            <div class="youhui" th:text="${solrGoods.gversion}"></div>
+            <div class="jiage" th:text="${solrGoods.gprice}"></div>
+        </div>
+
+
+        <div class="clear"></div>
+    </div>
+    <!--<div class="main center mb20">
+        <div class="mingxing fl mb20" style="border:2px solid #fff;width:230px;cursor:pointer;" onmouseout="this.style.border='2px solid #fff'" onmousemove="this.style.border='2px solid red'">
+            <div class="sub_mingxing"><a href=""><img src="./image/liebiao_xiaomi5.jpg" alt=""></a></div>
+            <div class="pinpai"><a href="">小米手机5</a></div>
+            <div class="youhui">骁龙820处理器 / UFS 2.0 闪存</div>
+            <div class="jiage">1799.00元</div>
+        </div>-->
+
+
+        <div class="clear"></div>
+    </div>
+</div>
+
+
+<footer class="mt20 center">
+    <div class="mt20">小米商城|MIUI|米聊|多看书城|小米路由器|视频电话|小米天猫店|小米淘宝直营店|小米网盟|小米移动|隐私政策|Select Region</div>
+    <div>©mi.com 京ICP证110507号 京ICP备10046444号 京公网安备11010802020134号 京网文[2014]0059-0009号</div>
+    <div>违法和不良信息举报电话：185-0130-1238，本网站所列数据，除特殊说明，所有数据均出自我司实验室测试</div>
+
+</footer>
+
+<!-- end danpin -->
+
+
+</body>
+</html>
+</body>
+</html>

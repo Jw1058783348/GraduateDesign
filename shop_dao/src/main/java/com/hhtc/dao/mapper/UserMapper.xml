@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hhtc.dao.IUserDao" >
+    <insert id="addUser">
+        insert into  t_user(username,password,name,birthday,phone,code.isdefault) values (#{username},#{password},#{name},#{birthday},#{phone}.#{code},#{isdefault})
+    </insert>
+    <insert id="addAddress" useGeneratedKeys="true" keyProperty="id">
+        insert  into t_address(person,address,phone,uid) values(#{person},#{address},#{phone},#{uid})
+    </insert>
+    <update id="updateUser">
+        update t_user
+        <set>
+            <if test="username != null and username !=''">
+                username=#{username},
+            </if>
+
+            <if test="password != null and password !=''">
+                password=#{password},
+            </if>
+
+            <if test="name != null and name !=''">
+                name=#{name},
+            </if>
+
+            <if test="birthday != null and birthday !=''">
+                birthday=#{birthday},
+            </if>
+
+            <if test="phone != null  and phone !=''">
+                phone=#{phone},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateAdminPwd">
+        insert  into t_admin(password) values (#{password})
+    </update>
+    <update id="updateAddress">
+        update t_address
+        <set>
+            <if test="person != null and person !=''">
+                person=#{person},
+            </if>
+
+            <if test="phone != null and phone !=''">
+                phone=#{phone},
+            </if>
+            <if test="address != null and address !=''">
+                address=#{address},
+            </if>
+
+            <if test="isdefault != null">
+                isdefault=#{isdefault},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="delUser">
+        delete from t_user where id=#{id}
+    </delete>
+    <delete id="batchDel">
+        delete from t_user where id in
+        <foreach collection="ids" open="(" close=")" index="ind" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteAddress">
+        delete  from t_address where id=#{id}
+    </delete>
+
+    <select id="queryByUsername" resultType="com.hhtc.entity.User">
+        select * from t_user where username=#{username}
+    </select>
+    <select id="queryAllUsers" resultType="com.hhtc.entity.User">
+        select * from t_user limit #{param1},#{param2}
+    </select>
+    <select id="queryCount" resultType="java.lang.Integer">
+    select count(*) from t_user
+  </select>
+    <select id="adminLogin" resultType="java.lang.Integer">
+        select count(*) from t_admin where username=#{param1} and password=#{param2}
+    </select>
+    <select id="queryAllAddress" resultType="com.hhtc.entity.Address">
+        select * from t_address limit #{param1},#{param2}
+    </select>
+    <select id="queryAddressCount" resultType="java.lang.Integer">
+        select count(*) from t_address
+    </select>
+    <select id="getUserById" resultType="com.hhtc.entity.User">
+        select  * from t_user where id =#{id}
+    </select>
+    <select id="queryAddressByUserId" resultType="com.hhtc.entity.Address">
+        select  * from t_address where uid=#{id}
+    </select>
+    <select id="queryAddressById" resultType="com.hhtc.entity.Address">
+        select  * from t_address where id=#{aid}
+    </select>
+    <!-- <insert id="addUser" >
+         insert into  t_user(username,password,name,birthday,phone) values (#{username,#{password},#{name},#{birthday},#{phone})
+     </insert>-->
+</mapper>

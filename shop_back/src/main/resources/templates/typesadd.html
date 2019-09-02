@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="${#request.getContextPath() + '/'}"/>
+    <meta charset="UTF-8">
+    <title>商品添加</title>
+    <link rel="stylesheet" href="layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="css/public.css" media="all" />
+</head>
+<body class="childrenBody">
+<script type="text/javascript" src="layui/layui.js" ></script>
+<script type="text/javascript" src="js/jquery.js" ></script>
+<form class="layui-form layui-row" action="/goods/typesSaveOrUpdateGoods" enctype="multipart/form-data" th:method="post"  id="form_id">
+    <div class="layui-row layui-col-xs12" >
+        <div class=" layui-col-xs9" ><!--最外面的大盒子-->
+            <div class="layui-form-item" ><!--商品标题盒子-->
+                <label class="layui-form-label">品牌名称</label>
+                <div class="layui-input-block">
+                    <input th:type="hidden" name="id" class="layui-input id" id="id_hidden"/>
+                    <input type="text" name="tname" required  lay-verify="required" placeholder="请输入商品品牌" autocomplete="off" class="layui-input tname">
+                </div>
+            </div>
+        </div>
+        <div class=" layui-col-xs3" >
+
+        </div>
+        <div class="layui-col-xs12">
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo" id="submit_btn" >立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+</html>

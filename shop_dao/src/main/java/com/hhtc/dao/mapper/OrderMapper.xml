@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hhtc.dao.IOrderDao" >
+
+
+    <insert id="addOrder" useGeneratedKeys="true" keyProperty="id">
+        insert  into t_orders(orderid,uid,person,address,phone,code,oprice,status,createTime,common) values(#{orderid},#{uid},#{person},#{address},#{phone},#{code},#{oprice},#{status},#{createTime},#{common})
+    </insert>
+    <insert id="addOrderDetaails">
+        insert into t_orderdetails(oid,gid,gname,ginfo,gprice,gimage,gversion,gnumber) values (#{oid},#{gid},#{gname},#{ginfo},#{gprice},#{gimage},#{gversion},#{gnumber})
+    </insert>
+    <update id="updateOrder">
+        update t_orders
+        <set>
+            <if test="person != null and person !=''">
+                person=#{person},
+            </if>
+
+            <if test="address != null and address != ''">
+                address=#{address},
+            </if>
+
+            <if test="phone != null  and phone!=''">
+                phone=#{phone},
+            </if>
+            <if test="oprice != null ">
+                oprice=#{oprice},
+            </if>
+
+            <if test="common != null and common !=''">
+                common=#{common},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateorderDetails">
+        update t_orderdetails
+            <set>
+                <if test="gnumber != null ">
+                    gnumber=#{gnumber},
+                </if>
+            </set>
+            where id = #{id}
+    </update>
+    <delete id="deleteOrder">
+        delete  from t_orders where  id=#{id}
+    </delete>
+    <delete id="delOrderDetails">
+        delete  from t_orderdetails where id= #{id}
+    </delete>
+    <select id="queryOrderByUid" resultType="com.hhtc.entity.Orders">
+        select * from t_orders where uid=#{uid}
+    </select>
+    <select id="queryOrderDetailsByOid" resultType="com.hhtc.entity.OrderDetails">
+        select * from t_orderdetails where oid =#{oid}
+    </select>
+    <select id="queryAll" resultType="com.hhtc.entity.Orders">
+        select *  from  t_orders limit #{param1},#{param2}
+    </select>
+    <select id="queryCount" resultType="java.lang.Integer">
+        select  count(*) from t_orders
+    </select>
+    <select id="getOrderByOid" resultType="com.hhtc.entity.Orders">
+        select  * from t_orders where id=#{id}
+    </select>
+    <select id="queryAllDetails" resultType="com.hhtc.entity.OrderDetails">
+        select *  from  t_orderdetails limit #{param1},#{param2}
+    </select>
+    <select id="queryDetailsCount" resultType="java.lang.Integer">
+         select  count(*) from t_orderdetails
+    </select>
+    <select id="queryOrderDetailsById" resultType="com.hhtc.entity.OrderDetails">
+        select  * from t_orderdetails where id=#{id}
+    </select>
+</mapper>

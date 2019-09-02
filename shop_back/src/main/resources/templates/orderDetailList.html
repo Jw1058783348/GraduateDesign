@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="${#request.getContextPath() + '/'}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="layui/css/layui.css" media="all">
+    <title>商品详情</title>
+</head>
+<body>
+<!--商品的添加及批量删除按钮-->
+<blockquote class="layui-elem-quote quoteBox">
+       <!-- <div class="layui-inline">
+            <a class="layui-btn layui-btn-normal addGoods_btn">添加商品</a>
+        </div>-->
+</blockquote>
+
+<table class="layui-hide" id="goodstable" lay-filter="test" lay-data="{id: 'gdsTable'}"></table>
+
+</body>
+<script type="text/javascript" src="layui/layui.js" ></script>
+<script type="text/javascript" src="js/jquery.js" ></script>
+
+<!--table里的操作模板-->
+<script type="text/html" id="goodsOperate">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+</script>
+
+<!--防止layui的table里的图片显示不全,配合行内style:height样式-->
+<style type="text/css">
+    .layui-table-cell{
+        height:auto!important;
+        white-space:normal;
+    }
+</style>
+
+<!--渲染table表格的里的图片的模板-->
+<script type="text/html" id="imgtmp">
+    <img th:src="${imagePath+'{{d.gimage}}'}"/>
+</script>
+
+<script th:inline="none">//在js中用到 [[ ]]
+    layui.use(['jquery','table','laytpl','layer'], function(){
+        var form = layui.form,
+            table = layui.table,
+            layer = layui.layer,
+            laytpl = layui.laytpl,
+            $ = layui.jquery;
+
+        //商品列表
+        var tableIns =table.render({
+            elem: '#goodstable'
+            ,url:'/order/getOrderDetailsList'
+            ,page: true
+           // ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            ,size : 'lg'
+            ,cols: [[
+                {type: "checkbox",  width: 50,style:"height:120px",}
+                ,{field:'id', width:100, title: 'id', sort: true, style:"height:120px"}
+                ,{field:'oid', width:290, title: '订单编号',templet:function (row) {
+                        if(row.oid!=0){
+                            console.log(row.oid);
+                            var vss;
+                            $.ajax({
+                                url:"/order/getOrderByOid",
+                                data:{"id":row.oid},
+                                async: false,//设置成同步才能实现数据外传
+                                success:function (data) {
+                                    console.log(data);
+                                    var user=eval("("+data+")");
+                                    vss=user.orderid;
+                                }
+                            });
+                            return vss;
+                        }else{
+                            return row.oid;
+                        }
+                    }}
+                ,{field:'gimage',width:120, title: '图片',width:120,templet:"#imgtmp",align:"center",style:"height:120px"}
+                ,{field:'ginfo', width:290, title:'商品信息',align:"center",style:"height:120px"}
+                ,{field:'gversion', width:290, title: '商品版本信息',style:"height:120px"}
+                ,{field:'gprice', width:100, title: '商品价格',style:"height:120px"}
+                ,{field:'gnumber', width:100, title: '商品数量',style:"height:120px"}
+                ,{title: '操作', width:120, templet:'#goodsOperate',style:"height:120px"}
+            ]]
+        });
+
+        //列表操作
+        table.on('tool(test)', function(obj){
+            var layEvent = obj.event,
+                data = obj.data;
+            //console.log(data);
+            if(layEvent === 'edit'){ //编辑
+                addGoods(data);
+            } else if(layEvent === 'del'){ //删除
+                layer.confirm('确定删除此订单详情？',{icon:3, title:'提示信息'},function(index){
+                    obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                    //删除商品
+                    $.ajax({
+                        type: "POST",
+                        url: "/order/delOrderDetails",
+                        data:{"id":data.id,"oid":data.oid,"gprice":data.gprice,"gnumber":data.gnumber},
+                        success: function(msg){
+                            layer.msg(msg);
+                            tableIns.reload();
+                            layer.close(index);
+                        }
+                    });
+                });
+            }
+        });
+
+        //触发点击添加商品
+        $(".addGoods_btn").click(function(){
+            addGoods();
+        });
+
+        //添加商品
+        function addGoods(edit) {
+            var index = layui.layer.open({
+                title: "添加/修改订单详情",
+                type: 2,
+                content: "toPage/orderDetailAdd",
+                area: ['800px', '500px'],
+                success: function (layero, index) {
+                    var body = layui.layer.getChildFrame('body', index);
+                    if (edit) {
+                        body.find(".id").val(edit.id);
+                        body.find(".oid").val(edit.oid);
+                        body.find(".gid").val(edit.gid);
+                        body.find(".gname").val(edit.gname);
+                        body.find(".ginfo").val(edit.ginfo);
+                        body.find(".gimage").val(edit.gimage);
+                        body.find(".thumbBox").attr("src","http://192.168.154.128/"+edit.gimage);
+                        body.find(".gnumber").val(edit.gnumber);
+                        body.find(".gprice").val(edit.gprice);
+                        body.find(".gversion").val(edit.gversion);
+                        //form.render('select');
+                        form.render();
+                    }
+                    setTimeout(function () {
+                        layui.layer.tips('点击此处返回商品列表', '.layui-layer-setwin .layui-layer-close', {
+                            tips: 3
+                        });
+                    }, 500)
+
+                },
+                end: function () {
+                    location.reload();
+                }
+            })
+
+        }
+    });
+</script>
+
+
+</html>

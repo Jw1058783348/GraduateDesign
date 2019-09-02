@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hhtc.dao.IGoodsDao" >
+    <update id="update">
+        update t_goods
+            <set>
+                <if test="gname != null and gname !=''">
+                    gname=#{gname},
+                </if>
+
+                <if test="ginfo != null and ginfo != ''">
+                    ginfo=#{ginfo},
+                </if>
+
+                <if test="tid != null ">
+                    tid=#{tid},
+                </if>
+
+                <if test="gcolor != null and gcolor !=''">
+                    gcolor=#{gcolor},
+                </if>
+
+                <if test="gversion != null ">
+                    gversion=#{gversion},
+                </if>
+
+                <if test="gimage != null and gimage != ''">
+                    gimage=#{gimage},
+                </if>
+
+            </set>
+            where id = #{id}
+    </update>
+    <update id="updateVersions">
+        update t_versions
+            <set>
+            <if test="gversion != null and gversion !=''">
+                gversion=#{gversion},
+            </if>
+
+            <if test="gprice != null">
+                gprice=#{gprice},
+            </if>
+
+            <if test="gid != null">
+                gid=#{gid},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateTypes">
+        update t_types set tname=#{tname} where id=#{id}
+    </update>
+    <delete id="delete">
+        delete from t_goods where id= #{id}
+    </delete>
+    <delete id="batchDel" parameterType="list">
+            delete from t_goods where id in
+            <foreach collection="ids" open="(" close=")" index="ind" item="id" separator=",">
+                #{id}
+            </foreach>
+    </delete>
+    <delete id="deleteVersions">
+        delete from t_versions where gid=#{id}
+    </delete>
+    <delete id="batchDelVersions" parameterType="list">
+         delete from t_versions where gid in
+         <foreach collection="ids" open="(" close=")" index="ind" item="id" separator=",">
+                #{id}
+         </foreach>
+    </delete>
+    <delete id="deleteTypes">
+        delete  from t_types where id=#{id}
+    </delete>
+    <select id="queryAll" resultType="com.hhtc.entity.Goods">
+    select * from t_goods limit #{param1},#{param2}
+  </select>
+    <select id="queryCount" resultType="java.lang.Integer">
+    select count(*) from t_goods
+  </select>
+    <insert id="insert" parameterType="com.hhtc.entity.Goods" useGeneratedKeys="true" keyProperty="id">
+        insert into t_goods(gname,ginfo,tid,gcolor,gversion,gimage) values(#{gname},#{ginfo},#{tid},#{gcolor},#{gversion},#{gimage})
+    </insert>
+    <insert id="addVersions" parameterType="com.hhtc.entity.Versions" useGeneratedKeys="true" keyProperty="id">
+        insert t_versions(gid,gversion,gprice) values (#{gid},#{gversion},#{gprice})
+    </insert>
+    <insert id="addTypes">
+        insert  into t_types(tname) values (#{tname})
+    </insert>
+    <select id="queryTypes" resultType="com.hhtc.entity.Types">
+        select * from t_types
+    </select>
+    <select id="queryVersions" resultType="com.hhtc.entity.Versions">
+        select * from t_versions where gid=#{gid}
+    </select>
+    <select id="queryKeyId" resultType="java.lang.Integer">
+        select id from t_goods order by id desc limit 1
+
+      </select>
+    <select id="getGoodsById" resultType="com.hhtc.entity.Goods">
+        select  * from t_goods where id=#{gid}
+    </select>
+    <select id="queryVersionsByVid" resultType="com.hhtc.entity.Versions">
+        select  * from t_versions where id =#{vid}
+    </select>
+
+
+</mapper>

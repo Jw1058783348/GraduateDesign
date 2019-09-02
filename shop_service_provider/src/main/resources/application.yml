@@ -1,0 +1,25 @@
+server:
+  port: 9090
+spring:
+  datasource:
+    url: jdbc:mysql:///shops
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.mchange.v2.c3p0.debug.AfterCloseLoggingComboPooledDataSource
+  data:
+    solr:
+      host: http://192.168.154.128:8080/solr
+  redis:
+    host: 192.168.154.128
+mybatis:
+  mapper-locations: classpath*:com/hhtc/dao/mapper/*.xml
+  type-aliases-package: com.hhtc.entity
+dubbo:
+  application:
+    name: service_provider
+    registry:
+      address: zookeeper://192.168.154.128:2181
+    protocol:
+      name: dubbo
+      port: 20880

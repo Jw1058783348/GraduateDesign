@@ -1,0 +1,13 @@
+server:
+  port: 8081
+spring:
+  thymeleaf:
+    mode: HTML5
+    cache: false
+  redis:
+    host: 192.168.154.128
+dubbo:
+  application:
+    name: shop_front
+  registry:
+    address: zookeeper://192.168.154.128:2181

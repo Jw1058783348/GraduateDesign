@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="${#request.getContextPath() + '/'}"/>
+        <meta charset="UTF-8">
+        <title>个人中心</title>
+        <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <script type="text/javascript" src="./js/jquery.js"></script>
+    <script type="text/javascript" src="./js/login.js"></script>
+    <script type="text/javascript" src="./layui/layui.js"></script>
+    <link rel="stylesheet" href="layui/css/layui.css" media="all">
+    <script type="text/javascript" src="js/liebiao.js"></script>
+    </head>
+<body >
+<!-- start header -->
+<header>
+    <div class="top center">
+        <div class="left fl">
+        </div>
+        <div class="right fr">
+            <div class="gouwuche fr"><a href="http://localhost:8085/cart/list">购物车</a></div>
+            <div class="fr">
+                <ul id="login_eles">
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</header>
+<!--end header -->
+<!-- start banner_x -->
+<div class="banner_x center">
+    <a href="/" target="_blank"><div class="logo fl"></div></a>
+    <a href=""><div class="ad_top fl"></div></a>
+    <div class="nav fl">
+        <ul class="top_liebiao">
+        </ul>
+    </div>
+    <div class="search fr">
+        <form action="http://localhost:8082/search/list" method="get" >
+            <div class="text fl">
+                <input type="text" class="shuru"  name="keyword" placeholder="小米6">
+            </div>
+            <div class="submit fl">
+                <input type="submit" class="sousuo" value="搜索"/>
+            </div>
+            <div class="clear"></div>
+        </form>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- end banner_x -->
+<!-- self_info -->
+<div class="grzxbj">
+    <div class="selfinfo center">
+        <div class="lfnav fl">
+            <div class="ddzx">订单中心</div>
+            <div class="subddzx">
+                <ul>
+                    <li><a href="/index/toOrderList" >我的订单</a></li>
+                </ul>
+            </div>
+            <div class="ddzx">个人中心</div>
+            <div class="subddzx">
+                <ul>
+                    <li><a href="/index/toSelfInfo" style="color:#ff6700;font-weight:bold;">我的个人中心</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="rtcont fr">
+            <div class="grzlbt ml40">我的资料 <a href="/index/toUpdateSelfInfo">编辑</a></div>
+            <table class="layui-table">
+                <tr>
+                    <td>昵称:</td>
+                    <td  colspan="2" th:text="${user.username}"></td>
+                </tr>
+                <tr>
+                    <td>手机号:</td>
+                    <td  colspan="2" th:text="${user.phone}"></td>
+                </tr>
+                <tr>
+                    <td>密码:</td>
+                    <td  colspan="2" th:text="${user.password}"></td>
+                </tr>
+                <tr>
+                    <td>出生日期:</td>
+                    <td colspan="2" th:text="${user.birthday}"></td>
+                </tr>
+                <tr>
+                    <td>真实姓名:</td>
+                    <td  colspan="2" th:text="${user.name}"></td>
+                </tr>
+                <tr th:each="address:${addressList}">
+                    <td>地址:</td>
+                    <td th:text="${address.person+'&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp'+address.address+'&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp'+address.phone}"></td>
+                    <td><a th:href="${'/index/toUpdateAddress?id='+address.id}">编辑</a>|<a th:href="${'/index/toDelAddress?id='+address.id}">删除</a></td>
+                </tr>
+
+            </table>
+
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- self_info -->
+
+<footer class="mt20 center">
+    <div class="mt20">小米商城|MIUI|米聊|多看书城|小米路由器|视频电话|小米天猫店|小米淘宝直营店|小米网盟|小米移动|隐私政策|Select Region</div>
+    <div>©mi.com 京ICP证110507号 京ICP备10046444号 京公网安备11010802020134号 京网文[2014]0059-0009号</div>
+    <div>违法和不良信息举报电话：185-0130-1238，本网站所列数据，除特殊说明，所有数据均出自我司实验室测试</div>
+</footer>
+</body>
+</html>
